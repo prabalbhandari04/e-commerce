@@ -21,9 +21,9 @@ const userController = {
 
             const passwordHash = await bcrypt.hash(password, 12)
 
-            const newUser = {
-                name, email, password: passwordHash
-            }
+            const newUser = new Users({
+                name, email, password : passwordHash
+            })
             
             await newUser.save()
 
