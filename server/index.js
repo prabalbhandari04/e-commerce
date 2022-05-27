@@ -9,6 +9,11 @@ app.use(cors())
 app.use(cookieParser())
 
 
+
+// Routes
+app.use('/user', require('./routes/userRoute'))
+
+
 // Connect to mongodb
 
 mongoose.connect("mongodb+srv://viron:GqZkjxd283@cluster0.7p7fp.mongodb.net/?retryWrites=true&w=majority", {
