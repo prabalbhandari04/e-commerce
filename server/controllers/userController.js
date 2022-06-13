@@ -21,23 +21,46 @@ const userController = {
 
             const passwordHash = await bcrypt.hash(password, 12)
 
-            const newUser = new Users({
-                name, email, password : passwordHash
-            })
-            
-            await newUser.save()
+            const newUser = {
+                name, email, password: passwordHash
+            }
+        
+            const activation_token = createActivationToken(newUser)
 
-            const createdUser = await Users.create(newUser)
-            
-            res.status(201).json({msg: "User created successfully.", user: createdUser})
-
+            const url = `${CLIENT_URL}/user/activate/${activation_token}`
+            sendMail(email, url, "Verify your email address")
 
 
             res.json({msg: "Register Success! Please activate your email to start."})
+            
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
-    }
+    },
+    
+    activateEmail: async (req, res) => {
+        try {
+            const {activation_token} = req.body
+            const user = jwt.verify(activation_token, process.env.ACTIVATION_TOKEN_SECRET)
+            
+            const {name, email, password} = user
+
+            const check = await Users.findOne({email})
+            if(check) return res.status(400).json({msg:"This email already exists."})
+
+            const newUser = new Users({
+                name, email, password
+            })
+
+            await newUser.save()
+            console.log(user)
+            console.log(newUser)
+            res.json({msg: "Account has been activated!"})
+
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+    },
     
 }
 
