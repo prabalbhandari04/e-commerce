@@ -61,7 +61,7 @@ const Mail = (to, url, txt) => {
         `
     }
 
-    smtpTransport.sendMail(mailOptions, (err, infor) => {
+    smtpTransport.Mail(mailOptions, (err, infor) => {
         if(err) return err;
         return infor
     })

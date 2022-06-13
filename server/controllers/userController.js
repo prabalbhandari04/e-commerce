@@ -1,7 +1,7 @@
 const Users = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const sendMail = require('../utils/Mail')
+const Mail = require('../utils/Mail')
 
 const userController = {
     register: async (req, res) => {
